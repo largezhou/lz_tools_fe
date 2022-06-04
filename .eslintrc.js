@@ -56,5 +56,7 @@ module.exports = {
     'import/no-duplicates': 0,
     'operator-linebreak': ['error', 'before'],
     'vue/no-setup-props-destructure': 0,
+    'vue/multi-word-component-names': 0,
+    'no-unused-vars': 0,
   },
 }
