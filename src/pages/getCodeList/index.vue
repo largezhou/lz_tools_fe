@@ -19,7 +19,7 @@ const codeList: Ref<Code[]> = ref([])
 const loc = new BMapGL.Geolocation()
 loc.getCurrentPosition(
   function (r) {
-    if (this.getStatus() === BMAP_STATUS_SUCCESS) {
+    if (loc.getStatus() === BMAP_STATUS_SUCCESS) {
       lng = r.point.lng
       lat = r.point.lat
     }
@@ -38,7 +38,7 @@ loc.getCurrentPosition(
   {
     enableHighAccuracy: true,
     SDKLocation: true,
-    timeout: 2,
+    timeout: 2000,
   },
 )
 </script>
