@@ -10,41 +10,95 @@ export default defineComponent({
 import { getCodeList } from '@/api/code'
 import { Code } from '@/api/typings'
 import { Ref, ref } from 'vue'
+import { Address } from '@/pages/getCodeList/typings'
+import { getToken, inputUser } from '@/lib/auth'
 
 let lng: number
 let lat: number
 
 const codeList: Ref<Code[]> = ref([])
+const address: Ref<Address> = ref({
+  city: '',
+  country: '',
+  district: '',
+  province: '',
+  street: '',
+})
+const timeout: Ref<number> = ref(2000)
+const curUser: Ref<string> = ref(getToken())
+
+const onReLoc = () => {
+  timeout.value = 10000
+  getPosThenGetCodeList()
+}
+const onInputUser = () => {
+  const username = inputUser()
+  if (username) {
+    curUser.value = username
+    getPosThenGetCodeList()
+  }
+}
 
 const loc = new BMapGL.Geolocation()
-loc.getCurrentPosition(
-  function (r) {
-    if (loc.getStatus() === BMAP_STATUS_SUCCESS) {
-      lng = r.point.lng
-      lat = r.point.lat
-    }
+const getPosThenGetCodeList = () => {
+  loc.getCurrentPosition(
+    (r) => {
+      console.log(r)
 
-    getCodeList(lng, lat).then((res) => {
-      codeList.value = res.data.data
-
-      if (codeList.value.length > 0) {
-        const code = codeList.value[0]
-        if (code.dist !== -1) {
-          location.href = code.link
+      if (loc.getStatus() === BMAP_STATUS_SUCCESS) {
+        const resAddress = r.address
+        address.value = {
+          city: resAddress.city,
+          country: resAddress.country,
+          district: resAddress.district,
+          province: resAddress.province,
+          street: resAddress.street,
         }
+
+        lng = r.point.lng
+        lat = r.point.lat
+
+        lng = 113.060332
+        lat = 28.278409
       }
-    })
-  },
-  {
-    enableHighAccuracy: true,
-    SDKLocation: true,
-    timeout: 2000,
-  },
-)
+
+      getCodeList(lng, lat).then((res) => {
+        if (res.data.code !== 0) {
+          return
+        }
+
+        codeList.value = res.data.data
+
+        if (codeList.value.length > 0) {
+          const code = codeList.value[0]
+          console.log(import.meta.env)
+          if (code.dist !== -1 && import.meta.env.VITE_NOT_JUMP === 'false') {
+            location.href = code.link
+          }
+        }
+      })
+    },
+    {
+      enableHighAccuracy: true,
+      SDKLocation: true,
+      timeout: timeout.value,
+    },
+  )
+}
+
+getPosThenGetCodeList()
 </script>
 
 <template>
   <h1>场所码列表</h1>
+  <p>当前用户：{{ curUser }}</p>
+  <p>当前地址：{{ `${address.province}${address.city}${address.district}${address.street}` }}</p>
+  <button @click="onReLoc">
+    重新定位
+  </button>
+  <button @click="onInputUser">
+    输入用户
+  </button>
   <ul>
     <li v-for="code in codeList" :key="code.id">
       <h3>

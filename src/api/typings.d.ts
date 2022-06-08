@@ -8,19 +8,10 @@ interface Response<T> {
   requestId: string,
 }
 
-export type GetWechatAuthUrlResponse = Response<{
-  url: string
-}>
-
-export type LoginResponse = Response<{
-  token: string
-}>
-
 export type Code = {
   id: number
   createTime: string
   updateTime: string
-  copyFromId: number
   userId: number
   name: string
   lng: number
@@ -28,7 +19,6 @@ export type Code = {
   link: string
   times: number
   often: boolean
-  share: boolean
   dist: number
 }
 export type GetCodeListResponse = Response<Code[]>

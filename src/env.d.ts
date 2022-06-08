@@ -11,6 +11,8 @@ interface ImportMetaEnv {
   // 后端 url
   readonly VITE_BASE_URL: string
   readonly VITE_TIMEOUT: number
+  // 开发的时候，匹配到不跳转
+  readonly VITE_NOT_JUMP: string
 }
 
 interface ImportMeta {
