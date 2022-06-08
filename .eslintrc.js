@@ -22,7 +22,8 @@ module.exports = {
     },
   },
   globals: {
-    log: true,
+    BMapGL: true,
+    BMAP_STATUS_SUCCESS: true,
   },
   rules: {
     '@typescript-eslint/no-explicit-any': 'off',
