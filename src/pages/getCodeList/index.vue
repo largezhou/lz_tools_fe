@@ -57,9 +57,6 @@ const getPosThenGetCodeList = () => {
 
         lng = r.point.lng
         lat = r.point.lat
-
-        lng = 113.060332
-        lat = 28.278409
       }
 
       getCodeList(lng, lat).then((res) => {
