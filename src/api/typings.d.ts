@@ -1,7 +1,7 @@
 /**
  * 后端返回的响应个是
  */
-interface Response<T> {
+export interface Response<T> {
   code: number,
   data: T,
   msg: string,

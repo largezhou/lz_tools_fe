@@ -96,6 +96,9 @@ getPosThenGetCodeList()
   <button @click="onInputUser">
     输入用户
   </button>
+  <router-link :to="{ name: 'saveCode' }">
+    <button>添加场所码</button>
+  </router-link>
   <ul>
     <li v-for="code in codeList" :key="code.id">
       <h3>
