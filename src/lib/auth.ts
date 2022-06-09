@@ -1,11 +1,11 @@
-import { TOKEN_STORE_KEY } from '@/lib/consts'
+import { USERNAME_STORE_KEY } from '@/lib/consts'
 
 export const setToken = (token: string) => {
-  localStorage.setItem(TOKEN_STORE_KEY, token)
+  localStorage.setItem(USERNAME_STORE_KEY, token)
 }
 
 export const getToken = (): string => {
-  return localStorage.getItem(TOKEN_STORE_KEY) || ''
+  return localStorage.getItem(USERNAME_STORE_KEY) || ''
 }
 
 export const isLoggedIn = (): boolean => {
