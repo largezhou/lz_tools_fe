@@ -59,7 +59,7 @@ const getPosThenGetCodeList = () => {
 }
 getPosThenGetCodeList()
 
-const onSelectFile = (e: InputEvent) => {
+const onSelectFile = (e: Event) => {
   const input = e.target as HTMLInputElement
   if (!input.files || input.files.length === 0) {
     return
