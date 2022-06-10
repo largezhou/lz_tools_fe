@@ -1,9 +1,10 @@
 import axios from 'axios'
 import { getToken } from '@/lib/auth'
+import config from '@/lib/config'
 
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
-  timeout: import.meta.env.VITE_TIMEOUT || 5000,
+  baseURL: config.baseUrl,
+  timeout: config.timeout || 5000,
 })
 
 instance.interceptors.request.use(

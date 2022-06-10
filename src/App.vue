@@ -6,6 +6,14 @@ export default defineComponent({
 })
 </script>
 
+<script setup lang="ts">
+import VConsole from 'vconsole'
+
+if (location.href.indexOf('vc=1') !== -1) {
+  const vConsole = new VConsole()
+}
+</script>
+
 <template>
   <router-view/>
 </template>

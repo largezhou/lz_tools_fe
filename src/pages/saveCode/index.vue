@@ -30,10 +30,9 @@ const onReLoc = () => {
 }
 const onSubmit = async () => {
   const res = await saveCode(form.value)
-  console.log(res)
   msg.value = res?.data?.msg || ''
   if (res.data.code === 0) {
-    router.push({ name: 'index' })
+    await router.push({ name: 'index' })
   }
 }
 
@@ -94,13 +93,11 @@ const onSelectFile = (e: InputEvent) => {
       <input v-model="form.lat" class="input-text">
     </label>
     <label class="label">
-      <span class="label-text">是否常用</span>
-    </label>
-    <label class="label">
       <span class="label-text">场所码图片（png，jpeg，jpg）</span>
       <input type="file" accept=".png,.jpeg,.jpg" @input="onSelectFile">
     </label>
     <label class="label">
+      <button @click="router.back()">取消</button>
       <button @click="onReLoc">定位</button>
       <button @click="onSubmit">提交</button>
     </label>

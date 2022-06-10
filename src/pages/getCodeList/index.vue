@@ -12,6 +12,7 @@ import { Code } from '@/api/typings'
 import { Ref, ref } from 'vue'
 import { Address } from '@/pages/getCodeList/typings'
 import { getToken, inputUser } from '@/lib/auth'
+import config from '@/lib/config'
 
 let lng: number
 let lat: number
@@ -68,8 +69,10 @@ const getPosThenGetCodeList = () => {
 
         if (codeList.value.length > 0) {
           const code = codeList.value[0]
-          console.log(import.meta.env)
-          if (code.dist !== -1 && import.meta.env.VITE_NOT_JUMP === 'false') {
+          const nearCode = codeList.value.filter((code) => {
+            return code.dist !== -1
+          })
+          if (nearCode.length === 1 && !config.notJump) {
             location.href = code.link
           }
         }

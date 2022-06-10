@@ -9,10 +9,10 @@ declare module '*.vue' {
 
 interface ImportMetaEnv {
   // 后端 url
-  readonly VITE_BASE_URL: string
-  readonly VITE_TIMEOUT: number
+  readonly VITE_BASE_URL?: string
+  readonly VITE_TIMEOUT?: string
   // 开发的时候，匹配到不跳转
-  readonly VITE_NOT_JUMP: string
+  readonly VITE_NOT_JUMP?: string
 }
 
 interface ImportMeta {
