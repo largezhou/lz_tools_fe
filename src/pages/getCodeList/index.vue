@@ -11,8 +11,9 @@ import { getCodeList } from '@/api/code'
 import { Code } from '@/api/typings'
 import { Ref, ref } from 'vue'
 import { Address } from '@/pages/getCodeList/typings'
-import { getToken, inputUser } from '@/lib/auth'
+import { getToken } from '@/lib/auth'
 import config from '@/lib/config'
+import CurUser from '@/components/CurUser/index.vue'
 
 let lng: number
 let lat: number
@@ -32,14 +33,13 @@ const onReLoc = () => {
   timeout.value = 10000
   getPosThenGetCodeList()
 }
-const onInputUser = () => {
-  const username = inputUser()
-  if (username) {
-    curUser.value = username
-    getPosThenGetCodeList()
-  }
+
+const onChangeUser = (username: string) => {
+  curUser.value = username
+  getPosThenGetCodeList()
 }
 
+const msg = ref('')
 const loc = new BMapGL.Geolocation()
 const getPosThenGetCodeList = () => {
   loc.getCurrentPosition(
@@ -62,6 +62,7 @@ const getPosThenGetCodeList = () => {
 
       getCodeList(lng, lat).then((res) => {
         if (res.data.code !== 0) {
+          msg.value = res.data.msg
           return
         }
 
@@ -91,17 +92,15 @@ getPosThenGetCodeList()
 
 <template>
   <h1>场所码列表</h1>
-  <p>当前用户：{{ curUser }}</p>
+  <CurUser @change-user="onChangeUser"/>
   <p>当前地址：{{ `${address.province}${address.city}${address.district}${address.street}` }}</p>
   <button @click="onReLoc">
     重新定位
   </button>
-  <button @click="onInputUser">
-    输入用户
-  </button>
   <router-link :to="{ name: 'saveCode' }">
     <button>添加场所码</button>
   </router-link>
+  <p>{{ msg }}</p>
   <ul>
     <li v-for="code in codeList" :key="code.id">
       <h3>

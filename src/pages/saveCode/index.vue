@@ -11,6 +11,7 @@ import { Ref, ref } from 'vue'
 import SaveCodeRequest from '@/pages/saveCode/typings'
 import { saveCode } from '@/api/code'
 import router from '@/router'
+import CurUser from '@/components/CurUser/index.vue'
 
 const form: Ref<SaveCodeRequest> = ref({
   id: undefined,
@@ -26,7 +27,7 @@ const msg = ref('')
 
 const onReLoc = () => {
   timeout.value = 10000
-  getPosThenGetCodeList()
+  getPos()
 }
 const onSubmit = async () => {
   const res = await saveCode(form.value)
@@ -37,7 +38,7 @@ const onSubmit = async () => {
 }
 
 const loc = new BMapGL.Geolocation()
-const getPosThenGetCodeList = () => {
+const getPos = () => {
   loc.getCurrentPosition(
     (r) => {
       console.log(r)
@@ -57,7 +58,7 @@ const getPosThenGetCodeList = () => {
     },
   )
 }
-getPosThenGetCodeList()
+getPos()
 
 const onSelectFile = (e: Event) => {
   const input = e.target as HTMLInputElement
@@ -71,6 +72,7 @@ const onSelectFile = (e: Event) => {
 
 <template>
   <h1>保存场所码</h1>
+  <CurUser/>
   <div>
     <label class="label">
       <span class="label-text">ID</span>
