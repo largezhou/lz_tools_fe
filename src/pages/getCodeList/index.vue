@@ -14,6 +14,7 @@ import { Address } from '@/pages/getCodeList/typings'
 import { getToken } from '@/lib/auth'
 import config from '@/lib/config'
 import CurUser from '@/components/CurUser/index.vue'
+import { iframeLink } from '@/hooks/codeLink'
 
 let lng: number
 let lat: number
@@ -74,7 +75,7 @@ const getPosThenGetCodeList = () => {
             return code.dist !== -1
           })
           if (nearCode.length === 1 && !config.notJump) {
-            location.href = code.link
+            iframeLink.value = code.link
           }
         }
       })
@@ -88,6 +89,14 @@ const getPosThenGetCodeList = () => {
 }
 
 getPosThenGetCodeList()
+
+const onGoLink = (e: Event) => {
+  const a = e.target as HTMLElement
+  const href = ((e.target as HTMLElement).getAttribute('href') || '').trim()
+  if (href.length > 0) {
+    iframeLink.value = a.getAttribute('href') || ''
+  }
+}
 </script>
 
 <template>
@@ -105,7 +114,7 @@ getPosThenGetCodeList()
     <li v-for="code in codeList" :key="code.id">
       <h3>
         <span v-if="code.often">常用</span>
-        <a :href="code.link">{{ code.name }}</a>
+        <a :href="code.link" @click.prevent.stop="onGoLink">{{ code.name }}</a>
         <span v-if="code.dist > -1">({{ code.dist + '米' }})</span>
       </h3>
     </li>
