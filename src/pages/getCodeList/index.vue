@@ -43,7 +43,7 @@ const onInputUser = () => {
 const loc = new BMapGL.Geolocation()
 const getPosThenGetCodeList = () => {
   loc.getCurrentPosition(
-    (r: any) => {
+    (r) => {
       console.log(r)
 
       if (loc.getStatus() === BMAP_STATUS_SUCCESS) {
