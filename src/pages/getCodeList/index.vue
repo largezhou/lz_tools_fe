@@ -75,7 +75,8 @@ const getPosThenGetCodeList = () => {
             return code.dist !== -1
           })
           if (nearCode.length === 1 && !config.notJump) {
-            iframeLink.value = code.link
+            location.href = code.link
+            // iframeLink.value = code.link
           }
         }
       })
