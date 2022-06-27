@@ -28,9 +28,11 @@ const address: Ref<Address> = ref({
 })
 const timeout: Ref<number> = ref(2000)
 const curUser: Ref<string> = ref(getToken())
+const locCountdown = ref(0)
+const locCountdownInterval = ref(-1)
 
 const onReLoc = () => {
-  timeout.value = 10000
+  codeList.value = []
   getPosThenGetCodeList()
 }
 
@@ -42,9 +44,15 @@ const onChangeUser = (username: string) => {
 const msg = ref('')
 const loc = new BMapGL.Geolocation()
 const getPosThenGetCodeList = () => {
+  locCountdown.value = 30
+  locCountdownInterval.value = window.setInterval(() => locCountdown.value--, 1000)
+
   loc.getCurrentPosition(
     (r) => {
       console.log(r)
+
+      window.clearInterval(locCountdownInterval.value)
+      locCountdown.value = 0
 
       if (loc.getStatus() === BMAP_STATUS_SUCCESS) {
         const resAddress = r.address
@@ -94,7 +102,7 @@ getPosThenGetCodeList()
 <template>
   <h1>场所码列表</h1>
   <CurUser @change-user="onChangeUser"/>
-  <p>当前地址：{{ `${address.province}${address.city}${address.district}${address.street}` }}</p>
+  <p>当前地址：{{ locCountdown > 0 ? `定位中：${locCountdown}` : `${address.province}${address.city}${address.district}${address.street}` }}</p>
   <button @click="onReLoc">
     重新定位
   </button>
