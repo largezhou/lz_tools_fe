@@ -30,6 +30,7 @@ const onReLoc = () => {
   getPos()
 }
 const onSubmit = async () => {
+  msg.value = ''
   const res = await saveCode(form.value)
   msg.value = res?.data?.msg || ''
   if (res.data.code === 0) {
@@ -71,58 +72,67 @@ const onSelectFile = (e: Event) => {
 </script>
 
 <template>
-  <h1>保存场所码</h1>
+  <div class="header">
+    <span class="title">保存场所码</span>
+  </div>
   <CurUser/>
-  <div>
-    <label class="label">
-      <span class="label-text">ID</span>
-      <span>{{ form.id || '无' }}</span>
+  <div style="margin: 10px;">
+    <label class="form-item">
+      <span class="info">ID</span>
+      <input :value="form.id || '无'" class="input" disabled>
     </label>
-    <label class="label">
-      <span class="label-text">名称</span>
-      <input v-model="form.name" class="input-text">
+    <label class="form-item">
+      <span class="info">名称</span>
+      <input v-model="form.name" class="input">
     </label>
-    <label class="label">
-      <span class="label-text">地点</span>
-      <input class="input-text" :value="address" disabled>
+    <label class="form-item">
+      <span class="info">地点</span>
+      <input class="input" :value="address" disabled>
     </label>
-    <label class="label">
-      <span class="label-text">经度</span>
-      <input v-model="form.lng" class="input-text">
+    <label class="form-item">
+      <span class="info">经度</span>
+      <input v-model="form.lng" class="input">
     </label>
-    <label class="label">
-      <span class="label-text">纬度</span>
-      <input v-model="form.lat" class="input-text">
+    <label class="form-item">
+      <span class="info">纬度</span>
+      <input v-model="form.lat" class="input">
     </label>
-    <label class="label">
-      <span class="label-text">场所码图片（png，jpeg，jpg）</span>
+    <label class="form-item">
+      <span class="info">场所码图片（png，jpeg，jpg）</span>
       <input type="file" accept=".png,.jpeg,.jpg" @input="onSelectFile">
     </label>
-    <label class="label">
-      <button @click="router.back()">取消</button>
-      <button @click="onReLoc">定位</button>
-      <button @click="onSubmit">提交</button>
-    </label>
-    <label class="label">
-      <span class="label-text">{{ msg }}</span>
+    <div>
+      <button class="btn" @click="router.back()">取消</button>
+      <button class="btn" @click="onReLoc">定位</button>
+      <button class="btn" @click="onSubmit">提交</button>
+    </div>
+    <label class="form-item">
+      <span class="info error">{{ msg }}</span>
     </label>
   </div>
 </template>
 
-<style scoped lang="less">
-.label {
-  display: block;
+<style lang="less">
+.header {
+  height: 50px;
+  position: relative;
+  text-align: center;
+  margin: 10px;
+
+  .title {
+    font-size: 20px;
+    line-height: 50px;
+    font-weight: 500;
+  }
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
   padding: 10px;
-}
 
-.label-text {
-  display: block;
-  padding: 5px 0;
-}
-
-.input-text {
-  display: block;
-  width: 100%;
-  height: 24px;
+  .info {
+    font-size: 16px;
+  }
 }
 </style>

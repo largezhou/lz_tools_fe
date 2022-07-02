@@ -1,13 +1,49 @@
-html {
-  height: 100%;
-}
-
 body {
-  height: 100%;
   margin: 0;
   padding: 0;
+  background: #f3f3f5;
 }
 
-#app {
-  height: 100%;
+.btn {
+  border-radius: 50px;
+  background: linear-gradient(145deg, #ebecee, #ffffff);
+  box-shadow: 4px 4px 8px #d3d3d5,
+    -4px -4px 8px #ffffff;
+
+  margin: 5px;
+  padding: 10px 15px;
+  outline: none;
+  border: none;
+  font-size: 14px;
+
+  &:active {
+    box-shadow: inset 4px 4px 8px #d3d3d5,
+      inset -4px -4px 8px #ffffff;
+  }
+}
+
+.input {
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  padding: 0 15px;
+  height: 38px;
+  margin: 5px;
+  background: linear-gradient(145deg, #ebecee, #ffffff);
+  box-shadow: inset 2px 2px 4px #d3d3d5,
+    inset -2px -2px 4px #ffffff;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.info {
+  font-size: 18px;
+  font-weight: bold;
+  color: #3c4353;
+
+  &.error {
+    color: #ff7a7b;
+  }
 }

@@ -7,7 +7,7 @@ export default defineComponent({
 </script>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { Ref, ref } from 'vue'
 import { getToken, setToken } from '@/lib/auth'
 
 type Emits = {
@@ -15,12 +15,12 @@ type Emits = {
 }
 const emit = defineEmits<Emits>()
 
-const username = ref()
-const curUser = ref(getToken())
 const msg = ref('')
+const inputRef: Ref<HTMLInputElement | null> = ref(null)
+const curUser = ref(getToken())
 const onConfirm = () => {
   msg.value = ''
-  const u = username.value?.trim() || ''
+  const u = inputRef.value?.value || ''
   if (u.length < 3 || u.length > 20) {
     msg.value = '用户名长度为 3-20'
     return
@@ -29,24 +29,42 @@ const onConfirm = () => {
   curUser.value = u
   setToken(u)
   emit('change-user', u)
-
-  username.value = ''
 }
 </script>
 
 <template>
-  <input v-model="username">
-  <button @click="onConfirm">
-    确定
-  </button>
-  <p v-show="msg.length === 0">
-    当前用户：{{ curUser }}
-  </p>
-  <p v-show="msg.length !== 0">
-    {{ msg }}
-  </p>
+  <div class="cur-user">
+    <div class="input-user">
+      <input
+        ref="inputRef"
+        placeholder="用户名"
+        class="input"
+        :value="curUser"
+      >
+      <button type="button" class="btn" @click="onConfirm">
+        确定
+      </button>
+    </div>
+    <div class="info error">{{ msg }}</div>
+  </div>
 </template>
 
 <style lang="less">
+.cur-user {
+  margin: 10px;
 
+  .input-user {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+
+    > input {
+      flex-grow: 1;
+    }
+
+    > button {
+      flex-grow: 0;
+    }
+  }
+}
 </style>

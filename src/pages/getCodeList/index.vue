@@ -83,7 +83,6 @@ const getPosThenGetCodeList = () => {
           })
           if (nearCode.length === 1 && !config.notJump) {
             location.href = code.link
-            // iframeLink.value = code.link
           }
         }
       })
@@ -100,27 +99,89 @@ getPosThenGetCodeList()
 </script>
 
 <template>
-  <h1>场所码列表</h1>
+  <div class="header">
+    <span class="title">场所码</span>
+    <div class="actions">
+      <button type="button" class="btn" @click="onReLoc">
+        定位
+      </button>
+      <router-link :to="{ name: 'saveCode' }">
+        <button type="button" class="btn">
+          添加
+        </button>
+      </router-link>
+    </div>
+  </div>
   <CurUser @change-user="onChangeUser"/>
-  <p>当前地址：{{ locCountdown > 0 ? `定位中：${locCountdown}` : `${address.province}${address.city}${address.district}${address.street}` }}</p>
-  <button @click="onReLoc">
-    重新定位
-  </button>
-  <router-link :to="{ name: 'saveCode' }">
-    <button>添加场所码</button>
-  </router-link>
-  <p>{{ msg }}</p>
-  <ul>
-    <li v-for="code in codeList" :key="code.id">
-      <h3>
-        <span v-if="code.often">常用</span>
-        <a :href="code.link">{{ code.name }}</a>
-        <span v-if="code.dist > -1">({{ code.dist + '米' }})</span>
-      </h3>
-    </li>
-  </ul>
+  <div class="code-list">
+    <div class="pos-info">
+      当前位置：{{ locCountdown > 0 ? `定位中：${locCountdown}` : `${address.province}${address.city}${address.district}${address.street}` }}
+    </div>
+    <div class="info error">
+      {{ msg }}
+    </div>
+    <div>
+      <a
+        v-for="code in codeList"
+        :key="code.id"
+        :href="code.link"
+        class="code-item"
+      >
+        <!--<span v-if="code.often">常用</span>-->
+        <div class="code-name">{{ code.name }}</div>
+        <div class="code-dist" v-if="code.dist > -1">{{ `距你 ${code.dist.toFixed(2)} 米` }}</div>
+      </a>
+    </div>
+  </div>
 </template>
 
 <style lang="less">
+.header {
+  height: 50px;
+  position: relative;
+  text-align: center;
+  margin: 10px;
 
+  .title {
+    font-size: 20px;
+    line-height: 50px;
+    font-weight: 500;
+  }
+
+  .actions {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+.code-list {
+  margin: 10px;
+
+  .pos-info {
+    color: #3c4353;
+    margin: 10px 0;
+  }
+
+  .code-item {
+    background: #ffffff;
+    margin-top: 10px;
+    border-radius: 8px;
+    display: block;
+    text-decoration: none;
+    color: #000000;
+    padding: 20px;
+    box-shadow: 1px 1px 8px 2px #e8e8e8;
+  }
+
+  .code-name {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .code-dist {
+    margin-top: 10px;
+    color: #818181;
+  }
+}
 </style>
