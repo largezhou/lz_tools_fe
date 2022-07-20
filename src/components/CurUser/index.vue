@@ -9,6 +9,7 @@ export default defineComponent({
 <script setup lang="ts">
 import { Ref, ref } from 'vue'
 import { getToken, setToken } from '@/lib/auth'
+import { useRoute } from 'vue-router'
 
 type Emits = {
   (e: 'change-user', username: string): void
@@ -17,7 +18,13 @@ const emit = defineEmits<Emits>()
 
 const msg = ref('')
 const inputRef: Ref<HTMLInputElement | null> = ref(null)
+
+const userFromQuery = useRoute().query.u
+if (userFromQuery && (typeof userFromQuery === 'string')) {
+  setToken(userFromQuery)
+}
 const curUser = ref(getToken())
+
 const onConfirm = () => {
   msg.value = ''
   const u = inputRef.value?.value || ''
@@ -45,7 +52,9 @@ const onConfirm = () => {
         确定
       </button>
     </div>
-    <div class="info error">{{ msg }}</div>
+    <div class="info error">
+      {{ msg }}
+    </div>
   </div>
 </template>
 
